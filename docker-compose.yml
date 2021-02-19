@@ -1,11 +1,37 @@
-version: "3"
+version: "3.2"
 
 volumes:
-  mysql_data: {}
+  db_data : {}
 
 services:
+
+  php74:
+    image: php:7.4.15-apache-buster
+    restart: always
+    container_name: php74
+    ports:
+      - "8074:80"
+    volumes:
+      - ./public_html:/var/www/html
+      - ./apache/php72:/var/log/apache2
+    links: 
+      - db:database
+
+  php52:
+    image: deminy/php-5.2
+    restart: always
+    container_name: php52
+    ports:
+      - "8052:80"
+    volumes:
+      - ./public_html:/project
+      - ./apache/php52:/var/log/apache2
+    links: 
+      - db:database
+
   db:
     image: mysql:5.5
+    restart: always
     container_name: mysql55
     environment:
       - MYSQL_ROOT_PASSWORD=111111
@@ -14,25 +40,16 @@ services:
       - MYSQL_PASSWORD=111111
     ports:
       - 8306:3306
+    volumes:
+      - db_data:/var/lib/mysql/root
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
     restart: always
-    volumes:
-      - mysql_data:/var/lib/mysql/root
-
-  apache:
-    build:
-      context: ./bin/apache24
-      depends_on: 
-        - db
-        - php74
-      ports:
-        - "8080:80"
-      volumes:
-        - ./public_html/:/var/www/html/
-
-  php74:
-    build:
-      context: ./bin/php74
-    container_name: php74
-    restart: 'always'
-    volumes:
-      - ./public_html/:/var/www/html/
+    ports:
+      - '8888:80'
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: password 
+    links: 
+      - db
