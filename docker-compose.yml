@@ -1,0 +1,38 @@
+version: "3"
+
+volumes:
+  mysql_data: {}
+
+services:
+  db:
+    image: mysql:5.5
+    container_name: mysql55
+    environment:
+      - MYSQL_ROOT_PASSWORD=111111
+      - MYSQL_DATABASE=root
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=111111
+    ports:
+      - 8306:3306
+    restart: always
+    volumes:
+      - mysql_data:/var/lib/mysql/root
+
+  apache:
+    build:
+      context: ./bin/apache24
+      depends_on: 
+        - db
+        - php74
+      ports:
+        - "8080:80"
+      volumes:
+        - ./public_html/:/var/www/html/
+
+  php74:
+    build:
+      context: ./bin/php74
+    container_name: php74
+    restart: 'always'
+    volumes:
+      - ./public_html/:/var/www/html/
