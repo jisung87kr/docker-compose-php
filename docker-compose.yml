@@ -6,7 +6,8 @@ volumes:
 services:
 
   php74:
-    image: php:7.4.15-apache-buster
+    build: 
+      context: ./bin/php74
     restart: always
     container_name: php74
     ports:
