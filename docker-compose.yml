@@ -18,6 +18,19 @@ services:
     links: 
       - db:database
 
+  php56:
+    build: 
+      context: ./bin/php56
+    restart: always
+    container_name: php56
+    ports:
+      - "8056:80"
+    volumes:
+      - ./public_html:/var/www/html
+      - ./apache/php56:/var/log/apache2
+    links: 
+      - db:database
+
   php52:
     image: deminy/php-5.2
     restart: always
