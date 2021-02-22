@@ -14,7 +14,8 @@ services:
       - "8074:80"
     volumes:
       - ./public_html:/var/www/html
-      - ./apache/php72:/var/log/apache2
+      - ./apache/log/php74:/var/log/apache2
+      - ./apache/conf/php74/apache2.conf:/etc/apache2/apache2.conf
     links: 
       - db:database
 
@@ -27,7 +28,8 @@ services:
       - "8056:80"
     volumes:
       - ./public_html:/var/www/html
-      - ./apache/php56:/var/log/apache2
+      - ./apache/log/php56:/var/log/apache2
+      - ./apache/conf/php56/apache2.conf:/etc/apache2/apache2.conf
     links: 
       - db:database
 
@@ -39,7 +41,8 @@ services:
       - "8052:80"
     volumes:
       - ./public_html:/project
-      - ./apache/php52:/var/log/apache2
+      - ./apache/log/php52:/var/log/apache2
+      - ./apache/conf/php52/apache2.conf:/etc/apache2/apache2.conf
     links: 
       - db:database
 
