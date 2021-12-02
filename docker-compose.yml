@@ -58,7 +58,7 @@ services:
     ports:
       - 8306:3306
     volumes:
-      - db_data:/var/lib/mysql/root
+      - db_data:/var/lib/mysql
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
